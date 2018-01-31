@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <link href="css/style.css" rel="stylesheet"> -->
+    </head>
+    <style>
+        body{
+            background: #f5f5f5;
+        }
+        #chat_container{
+            position: absolute;
+            top:50%;
+            left:50%;
+            margin-left: -200px;
+            margin-top: -350px;
+        }
+        #chat_background,#chat_main{
+            position: absolute;
+            left: 0;
+            top:0;
+        }
+        #chat_main{
+            z-index: 1
+        }
+    </style>
+    <body>
+        <!-- <canvas id="canvas" width="400" height="700"></canvas>
+        <canvas id="canvas2" width="400" height="700"></canvas>   -->
+        <!-- <div id="chat_container">
+            <canvas id="chat_background" width="400" height="700"></canvas>   
+            <canvas id="chat_main" width="400" height="700"></canvas> 
+        </div>    -->
+        <div>
+            <canvas id="canvasBoom" width="500" height="500">
+
+            </canvas>
+        </div>
+    </body>
+ <!-- <script>
+        var c=document.getElementById("canvas");
+        var ctx=c.getContext("2d");
+        ctx.fillStyle = "#DDFFDD"
+        ctx.fillRect(0,0,400,80)
+        // ctx.
+        ctx.fillStyle = "#f5f5f5"
+        ctx.fillRect(0,80,400,620)
+        ctx.strokeStyle = "#666"
+        ctx.strokeRect(0,0,400,700)
+        ctx.beginPath();
+        ctx.lineJoin="round";
+        ctx.lineWidth = 2
+        ctx.moveTo(10,90);
+        ctx.lineTo(390,90);
+        ctx.lineTo(390,650);
+        ctx.lineTo(10,650);  
+        ctx.lineTo(10,90);                      
+        ctx.strokeStyle = "#333"
+        ctx.stroke();
+</script>
+  <script>
+    var c2=document.getElementById("canvas2");
+    var ctx2=c2.getContext("2d");
+    function init(){
+        ctx2.fillRect(0,0,400,700)
+        ctx2.beginPath()
+        ctx2.lineWidth = 2
+        ctx2.strokeStyle = "#fff"
+        for(var i = 0 ;i < 200 ; i++){
+            var x = parseInt(Math.random()*400)
+            var y = parseInt(Math.random()*700)
+            ctx2.moveTo(x,y)
+            var offsetX = Math.random()*2
+            ctx2.lineTo(x+offsetX,y+offsetX)
+        }
+        ctx2.stroke()
+    }
+    function oneSteps (){
+        ctx2.clearRect(0,0,400,700)
+        init()
+    }
+    var timer = setInterval(oneSteps,1000)
+    init()
+</script>    -->
+<!-- <script>
+    var c=document.getElementById("chat_background");
+    var ctx=c.getContext("2d");
+    (function(){
+        var x = [],y = [],offsetX = []
+        function inits(step){
+            ctx.fillRect(0,0,400,700)
+            ctx.beginPath()
+            ctx.strokeStyle = "#fff"
+            ctx.lineWidth = 3
+            for(var i = 0 ; i < 150; i ++){
+                if(step){
+                    x[i] = parseInt(Math.random()*400)
+                    y[i] = parseInt(Math.random()*700) 
+                    offsetX[i] = Math.random()*2                        
+                }else{
+                    y[i] = y[i] + 1
+                    if(y[i]>700){
+                        y[i] = y[i] - 700
+                        x[i] = parseInt(Math.random()*400)
+                        offsetX[i] = Math.random()*2    
+                    }
+                }
+                ctx.moveTo(x[i],y[i])
+                ctx.lineTo(x[i] + offsetX[i],y[i] + offsetX[i])
+            }
+            ctx.stroke()
+        }
+        inits(true)
+        function oneStep(){
+            ctx.clearRect(0,0,400,700)
+            inits(false)
+        }
+        setInterval(oneStep,60)
+    })()
+
+    var d = document.getElementById("chat_main")
+    var context=d.getContext("2d")
+    context.clearRect(0,0,400,700)
+    context.lineWidth = 5
+    context.strokeStyle = "#333"
+    context.strokeRect(0,0,400,700)
+    // context.fillStyle="rgba(255, 255, 255, 0.3)";
+    // context.fillRect(5,5,390,40);
+    var grd=context.createLinearGradient(0,0,390,0);
+    grd.addColorStop(0,"rgba(255, 255, 255, 0.3)");
+    grd.addColorStop(0.5,"rgba(255, 255, 255, 0.8)");
+    grd.addColorStop(1,"rgba(255, 255, 255, 0.3)");
+    context.fillStyle=grd;
+    context.fillRect(5,5,390,40);
+    // ctx.fillRect(20,20,150,100);
+    context.fill()
+    context.moveTo(6,44)
+    context.lineTo(6,654)
+    context.lineTo(394,654)
+    context.lineTo(394,44)
+    context.lineTo(6,44)
+    context.lineJoin = "round"
+    context.lineWidth = 1
+    context.strokeStyle = "rgba(255, 255, 255, 0.9)"
+    context.stroke()
+
+
+    
+    // 气泡模型
+    
+
+
+
+    
+</script> -->
+<script>
+    var c=document.getElementById("canvasBoom");
+    var ctx=c.getContext("2d");
+    var width = 500;
+    var height = 500;
+    var size = 5;  //扩散圆宽度
+    var density = 8 //点的密度
+    var radius = 2 //扩散点的半径
+    function drawitem(x,y){
+        // console.log("runing")
+        ctx.beginPath();
+        ctx.strokeStyle = "#666"
+        for(var i = 0 ; i <= width ; i+=density){
+            for(var j=0; j <= height ; j+=density){
+                ctx.moveTo(i,j)
+                if( (i-x)*(i-x) + (j-y)*(j-y) == r*r ){
+                    ctx.arc(i,j,3,0,2*Math.PI)
+                }else{
+                    bigX = i>x ? i : x
+                    smallX = i>x ? x : i
+                    bigY = j>y ? j : y
+                    smallY = j>y ? y : j
+                    if(Math.pow((bigX-size)-smallX,2) + Math.pow((bigY-size)-smallY,2) < r*r && Math.pow((bigX+size)-smallX,2) + Math.pow((bigY+size)-smallY,2) > r*r){
+                            ctx.arc(i,j,radius,0,2*Math.PI)
+                            
+                    }else{
+                        ctx.arc(i,j,1,0,2*Math.PI)
+                    }
+
+                }
+            }
+        }
+        // ctx.stroke()
+        ctx.fill()
+        // ctx.moveTo(0,0);
+    }
+    
+    drawitem("",""); 
+    
+    var r = 1;
+    function toBig(x,y){
+            ctx.clearRect(0,0,width,height)
+            drawitem(x,y)
+            ctx.beginPath()
+            ctx.lineJoin = "round"
+            ctx.strokeStyle = "#666"
+            ctx.strokeStyle = "transparent"            
+            ctx.arc(x,y,r,0,2*Math.PI)
+            r+=1
+            ctx.stroke()
+            if(r >500){
+                // clearInterval(timer)
+                r = 1;
+            }
+    }
+    var timer
+    var beginX = 200
+    var beginY = 200
+    timer = setInterval(function() {
+                if(r == 1){
+                beginX = parseInt(Math.random()*500)
+                beginY = parseInt(Math.random()*500)
+                }
+                toBig(beginX,beginY)}
+            ,1)
+    
+</script>
+</html>
